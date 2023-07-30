@@ -33,3 +33,5 @@ node_modules
 
 spec/examples.txt
 coverage/
+
+.env

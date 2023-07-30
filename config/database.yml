@@ -8,13 +8,13 @@ default: &default
 
 development:
   <<: *default
-  database: change_me_development
+  database: lunch_matcher_development
 test:
   <<: *default
-  database: change_me_test
+  database: lunch_matcher_test
 
 production:
   <<: *default
-  database: change_me_production
-  username: change_me
-  password: <%= ENV["CHANGE_ME_DATABASE_PASSWORD"] %>
+  database: lunch_matcher_production
+  username: lunch_matcher
+  password: <%= ENV["LUNCH_MATCHER_DATABASE_PASSWORD"] %>

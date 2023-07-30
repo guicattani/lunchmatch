@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'dotenv'
+Dotenv.load
+
 ENV['RAILS_ENV'] ||= 'test'
 
 RSpec.configure do |config|
