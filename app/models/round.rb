@@ -2,11 +2,11 @@
 
 class Round < ApplicationRecord
   before_create :random_name
-  after_create :match_employees
+  # after_create :match_employees
 
   has_many :groups
 
-  private
+  # private
 
   def random_name
     self.name = Faker::Books::Lovecraft.tome if name.nil?
@@ -26,6 +26,28 @@ class Round < ApplicationRecord
     Employee.count.times do |index|
       employee = sample_random_employee(department_employees, index)
       new_groups[index % new_groups.length].employees << employee
+    end
+
+    assign_random_leader(new_groups)
+  end
+
+  def assign_random_leader(groups)
+    groups.each do |group|
+      leader = nil
+      tolerance = 0
+      while leader.nil?
+        group.group_employees.shuffle.each do |group_employee|
+          times_as_leader = GroupEmployee.times_as_leader(group_employee.employee_id).count
+          leader = group_employee if times_as_leader <= tolerance
+        end
+
+        if leader.nil?
+          tolerance += 1
+        else
+          leader.update(leader: true)
+          next
+        end
+      end
     end
   end
 
