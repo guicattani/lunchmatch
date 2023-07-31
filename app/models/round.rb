@@ -2,11 +2,11 @@
 
 class Round < ApplicationRecord
   before_create :random_name
-  # after_create :match_employees
+  after_create :match_employees
 
-  has_many :groups
+  has_many :groups, dependent: :destroy
 
-  # private
+  private
 
   def random_name
     self.name = Faker::Books::Lovecraft.tome if name.nil?
@@ -20,7 +20,7 @@ class Round < ApplicationRecord
 
   def create_new_round
     department_employees = query_department_employees
-    return if department_employees.empty?
+    return if department_employees.empty? || Employee.count <= 1
 
     new_groups = create_groups
     Employee.count.times do |index|
