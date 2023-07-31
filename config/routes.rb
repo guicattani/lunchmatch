@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :home, only: [:index]
+      resources :employees, only: [:index, :create]
+      resources :departments, only: [:index, :create]
+      resources :rounds, only: [:index, :create]
     end
   end
 

@@ -4,8 +4,7 @@ class Round < ApplicationRecord
   before_create :random_name
   after_create :match_employees
 
-  has_many :groups, dependent: :destroy
-
+  has_many :groups, -> { includes :group_employees }, dependent: :destroy
   private
 
   def random_name
