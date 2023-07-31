@@ -55,7 +55,7 @@ class Round < ApplicationRecord
     (Employee.count / ENV['MAX_EMPLOYEES_PER_GROUP'].to_f).ceil.times do
       groups << Group.create(round: self)
     end
-    groups
+    groups.shuffle
   end
 
   def sample_random_employee(department_employees, index)
