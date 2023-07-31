@@ -52,4 +52,8 @@ sudo -u postgres psql
 postgres
 ```
 
----
+# To be improved
+- `app/controllers/api/v1/rounds_controller.rb` logic is very simple at the time being and the json logic is not optimized at all. We would need to improve performance (we could everything with one query, but I chose to go with Rails syntax at the moment)
+- React app needs components tests
+- Rails app needs controller/request tests
+- Docker setup is still very basic

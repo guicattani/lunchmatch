@@ -1,0 +1,25 @@
+ARG RUBY_VERSION=3.2.2
+FROM ruby:$RUBY_VERSION
+# Install dependencies
+
+WORKDIR /app
+COPY . .
+
+# Ensure node.js 18 is available for apt-get
+ARG NODE_MAJOR=18
+RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR.x | bash -
+
+# Install node and yarn
+RUN apt-get update -qq && apt-get install -y nodejs
+
+COPY vendor/cache /app/vendor/cache/
+
+RUN gem install bundler
+RUN bundle install
+
+COPY package*.json ./
+# If you are building your code for production
+# RUN npm ci --omit=dev
+RUN npm install
+CMD [ "./bin/vite", "dev" ]
+

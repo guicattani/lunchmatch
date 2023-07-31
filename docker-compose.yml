@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:12.8
+
+    environment:
+      POSTGRES_PASSWORD: password
+    platform: "linux/${CPU_ARCH-amd64}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - api-db:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    tty: true
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile.rails
+    platform: "linux/${CPU_ARCH-amd64}"
+    volumes:
+      - ./:/app
+      - bundle:/bundle
+    ports:
+      - "3000:3000"
+    command: bundle exec rails server -b 0.0.0.0
+    entrypoint:
+      - ./entrypoints/docker-entrypoint.sh
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_PASS: password
+    depends_on:
+      - db
+
+volumes:
+  api-db:
+  bundle:
